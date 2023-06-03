@@ -1,0 +1,61 @@
+schema: '2.0'
+stages:
+  data_ingest:
+    cmd: python studentpredictor/create_dataset.py
+    deps:
+    - path: studentpredictor/create_dataset.py
+      md5: 66c07e23aa2629744fb91806cb50eec1
+      size: 724
+    outs:
+    - path: assets/data
+      md5: 5f2f16d08bc79a25938a066446b8e989.dir
+      size: 694076
+      nfiles: 2
+  features:
+    cmd: python studentpredictor/create_features.py
+    deps:
+    - path: assets/data
+      md5: 5f2f16d08bc79a25938a066446b8e989.dir
+      size: 694076
+      nfiles: 2
+    - path: studentpredictor/create_features.py
+      md5: 682b02ee54a91e5ac8984773559d4853
+      size: 1266
+    outs:
+    - path: assets/features
+      md5: 7879e364c6ed879b16a552cbca122a8c.dir
+      size: 75227
+      nfiles: 4
+  models:
+    cmd: python studentpredictor/train_model.py
+    deps:
+    - path: assets/features
+      md5: 7879e364c6ed879b16a552cbca122a8c.dir
+      size: 75227
+      nfiles: 4
+    - path: studentpredictor/train_model.py
+      md5: ccc1defe7406b6acfbd2d33536b24706
+      size: 470
+    outs:
+    - path: assets/models
+      md5: 3df5871079a0a738242b9a542911156c.dir
+      size: 619
+      nfiles: 1
+  evaluate:
+    cmd: python studentpredictor/evaluate_model.py
+    deps:
+    - path: assets/features
+      md5: 7879e364c6ed879b16a552cbca122a8c.dir
+      size: 75227
+      nfiles: 4
+    - path: assets/models
+      md5: 3df5871079a0a738242b9a542911156c.dir
+      size: 619
+      nfiles: 1
+    - path: studentpredictor/evaluate_model.py
+      md5: 277db6c10ed8278947d1bca0cec24d6b
+      size: 569
+    outs:
+    - path: assets/metrics.json
+      md5: dba4756abe8cab5fa5155299705174fc
+      size: 61

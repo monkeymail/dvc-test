@@ -1,0 +1,30 @@
+stages:
+  data_ingest:
+    cmd: python studentpredictor/create_dataset.py
+    deps:
+    - studentpredictor/create_dataset.py
+    outs:
+    - assets/data
+  features:
+    cmd: python studentpredictor/create_features.py
+    deps:
+    - assets/data
+    - studentpredictor/create_features.py
+    outs:
+    - assets/features
+  models:
+    cmd: python studentpredictor/train_model.py
+    deps:
+    - assets/features
+    - studentpredictor/train_model.py
+    outs:
+    - assets/models
+  evaluate:
+    cmd: python studentpredictor/evaluate_model.py
+    deps:
+    - assets/features
+    - assets/models
+    - studentpredictor/evaluate_model.py
+    metrics:
+    - assets/metrics.json:
+        cache: false

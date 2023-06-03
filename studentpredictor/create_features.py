@@ -10,7 +10,12 @@ test_df = pd.read_csv(str(Config.DATASET_PATH / "test.csv"))
 
 def extract_features(df):
     df["published_timestamp"] = pd.to_datetime(df.published_timestamp).dt.date
-    df["days_since_published"] = (date.today() - df.published_timestamp).dt.days
+    #print(date.today() - df.published_timestamp)
+    #print(type((date.today() - df.published_timestamp)))
+    #print(pd.to_datetime(date.today() - df.published_timestamp))
+    #print(pd.to_datetime(date.today()))
+    #print(type(pd.to_datetime(date.today())))
+    df["days_since_published"] = (pd.to_datetime(date.today()) - pd.to_datetime(df.published_timestamp)).dt.days
     return df[["num_lectures", "price", "days_since_published", "content_duration"]]
 
 train_features = extract_features(train_df)
